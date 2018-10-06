@@ -8,6 +8,8 @@ namespace Controls.Midi
     public static class DefaultControls
     {
         const float kWidth = 80;
+        const float wHeight = 80;
+        const float wWidth = 220;
         private static Vector3 labelPosition = new Vector3(0.0f, 5.0f, 0.0f);
 
         // Retrieve and invoke a private method "DefaultControls.CreateUIElementRoot".
@@ -148,6 +150,33 @@ namespace Controls.Midi
             SetDefaultColorTransitionValues(toggle, true);
             toggle.targetGraphic = bgImage;
             toggle.graphic = ckImage;
+
+            return root;
+        }
+
+        // Wave
+        public static GameObject CreateWave(WaveType waveType, Sprite sprite, Font font)
+        {
+            // UI hierarchy
+            Vector2 size = Vector2.one;
+            size.x *= wWidth;
+            size.y *= wHeight;
+            var root = CreateUIElementRoot(waveType.ToString() + " Wave", size);
+            var graphic = CreateUIObject("Graphic", root);
+
+            // Stretch settings
+            FitToParent(graphic, Vector2.zero);
+
+            // Graphic
+            var image = graphic.AddComponent<Image>();
+            image.material = new Material(Shader.Find("UI/Unlit/Wave"));
+            image.sprite = sprite;
+            image.color = Color.white;
+
+            // Wave
+            var wave = root.AddComponent<MidiWave>();
+            wave.graphic = image;
+            wave.waveType = waveType;
 
             return root;
         }

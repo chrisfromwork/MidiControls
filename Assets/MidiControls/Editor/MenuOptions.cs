@@ -59,5 +59,84 @@ namespace Controls.Midi
             );
             PlaceUIElementRoot(go, menuCommand);
         }
+
+        [MenuItem("GameObject/UI/Sine Wave", false, 13)]
+        static void AddSineWave(MenuCommand menuCommand)
+        {
+            var waveType = WaveType.Sine;
+            var go = DefaultControls.CreateWave(
+                waveType,
+                GetSprite(waveType),
+                LoadResource<Font>("DejaVuSans-ExtraLight.ttf")
+            );
+            PlaceUIElementRoot(go, menuCommand);
+        }
+
+        [MenuItem("GameObject/UI/Saw Wave", false, 14)]
+        static void AddSawWave(MenuCommand menuCommand)
+        {
+            var waveType = WaveType.Saw;
+            var go = DefaultControls.CreateWave(
+                waveType,
+                GetSprite(waveType),
+                LoadResource<Font>("DejaVuSans-ExtraLight.ttf")
+            );
+            PlaceUIElementRoot(go, menuCommand);
+        }
+
+        [MenuItem("GameObject/UI/Inverse Saw Wave", false, 15)]
+        static void AddInverseSawWave(MenuCommand menuCommand)
+        {
+            var waveType = WaveType.InverseSaw;
+            var go = DefaultControls.CreateWave(
+                waveType,
+                GetSprite(waveType),
+                LoadResource<Font>("DejaVuSans-ExtraLight.ttf")
+            );
+            PlaceUIElementRoot(go, menuCommand);
+        }
+
+        [MenuItem("GameObject/UI/Square Wave", false, 16)]
+        static void AddSquareWave(MenuCommand menuCommand)
+        {
+            var waveType = WaveType.Square;
+            var go = DefaultControls.CreateWave(
+                waveType,
+                GetSprite(waveType),
+                LoadResource<Font>("DejaVuSans-ExtraLight.ttf")
+            );
+            PlaceUIElementRoot(go, menuCommand);
+        }
+
+        [MenuItem("GameObject/UI/Triangle Wave", false, 17)]
+        static void AddTriangleWave(MenuCommand menuCommand)
+        {
+            var waveType = WaveType.Triangle;
+            var go = DefaultControls.CreateWave(
+                waveType,
+                GetSprite(waveType),
+                LoadResource<Font>("DejaVuSans-ExtraLight.ttf")
+            );
+            PlaceUIElementRoot(go, menuCommand);
+        }
+
+        static Sprite GetSprite(WaveType wave)
+        {
+            switch (wave)
+            {
+                case WaveType.InverseSaw:
+                    return LoadResource<Sprite>("inversesaw.png");
+                case WaveType.Saw:
+                    return LoadResource<Sprite>("saw.png");
+                case WaveType.Sine:
+                    return LoadResource<Sprite>("sine.png");
+                case WaveType.Square:
+                    return LoadResource<Sprite>("square.png");
+                case WaveType.Triangle:
+                    return LoadResource<Sprite>("triangle.png");
+                default:
+                    throw new Exception("Sprite doesn't exist for wave type.");
+            }
+        }
     }
 }
