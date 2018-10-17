@@ -63,7 +63,7 @@
 			{
 				if (uv.x > _Position)
 				{
-					color = float4(0, 0, 0, 1.0);
+					color = float4(0.282, 0.282, 0.282, 1.0);
 				}
 				else
 				{

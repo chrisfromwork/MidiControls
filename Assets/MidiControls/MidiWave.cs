@@ -25,21 +25,6 @@ public class MidiWave : MonoBehaviour, ICanvasElement {
         set { _waveType = value; }
     }
 
-    [SerializeField] bool _clockSync;
-    public bool clockSync
-    {
-        get { return _clockSync; }
-        set { _clockSync = value; }
-    }
-
-    [SerializeField]
-    float _beats = 5.0f;
-    public float beats
-    {
-        get { return _beats; }
-        set { _beats = value; }
-    }
-
     [SerializeField] float _value;
     public float value
     {
@@ -107,26 +92,6 @@ public class MidiWave : MonoBehaviour, ICanvasElement {
     #endregion
 
     private float periodsInGraphic = 2.0f;
-    private bool subscribed = false;
-
-    void EnsureMidiSubscription()
-    {
-        if (!subscribed && _clockSync)
-        {
-            MidiJack.MidiDriver.Instance.clockEvent += OnClockEvent;
-            subscribed = true;
-        }
-        else if (subscribed && !_clockSync)
-        {
-            MidiJack.MidiDriver.Instance.clockEvent -= OnClockEvent;
-            subscribed = false;
-        }
-    }
-
-    void OnClockEvent(float beatlLength)
-    {
-        _period = beatlLength * _beats;
-    }
 
     void UpdatePosition()
     {
@@ -193,7 +158,6 @@ public class MidiWave : MonoBehaviour, ICanvasElement {
     // Use this for initialization
     void Start () {
         UpdateVisual();
-        EnsureMidiSubscription();
 
         _position = 0;
     }
@@ -201,7 +165,6 @@ public class MidiWave : MonoBehaviour, ICanvasElement {
     // Update is called once per frame
     void Update ()
     {
-        EnsureMidiSubscription();
         UpdatePosition();
         UpdateVisual();
         UpdateValue();
