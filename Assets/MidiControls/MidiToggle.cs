@@ -14,6 +14,10 @@ namespace Controls.Midi
         [SerializeField] int _noteNumber = 0;
         [SerializeField] bool _isOn;
 
+        [SerializeField] bool _useControl = false;
+        [SerializeField] int _controlNumber = 0;
+        [SerializeField] float _controlThreshold = 0.5f;
+
         public bool isOn
         {
             get { return _isOn; }
@@ -129,20 +133,26 @@ namespace Controls.Midi
 
         private void onNoteOn(MidiChannel channel, int note, float velocity)
         {
-            if ((_midiChannel == MidiChannel.All || _midiChannel == channel) &&
-                (_noteNumber == note))
+            if (!_useControl)
             {
-                isOn = !isOn;
-                DoStateTransition(SelectionState.Pressed, true);
+                if ((_midiChannel == MidiChannel.All || _midiChannel == channel) &&
+                    (_noteNumber == note))
+                {
+                    isOn = !isOn;
+                    DoStateTransition(SelectionState.Pressed, true);
+                }
             }
         }
 
         private void onNoteOff(MidiChannel channel, int note)
         {
-            if ((_midiChannel == MidiChannel.All || _midiChannel == channel) &&
-                (_noteNumber == note))
+            if (!_useControl)
             {
-                DoStateTransition(SelectionState.Normal, true);
+                if ((_midiChannel == MidiChannel.All || _midiChannel == channel) &&
+                    (_noteNumber == note))
+                {
+                    DoStateTransition(SelectionState.Normal, true);
+                }
             }
         }
 
@@ -152,7 +162,43 @@ namespace Controls.Midi
             if (label)
             {
                 var text = label.GetComponent<Text>();
-                text.text = _midiChannel.ToString().ToUpper() + " N" + _noteNumber;
+                if (!_useControl)
+                {
+                    text.text = _midiChannel.ToString().ToUpper() + " N" + _noteNumber;
+                }
+                else
+                {
+                    text.text = _midiChannel.ToString().ToUpper() + " C" + _controlNumber;
+                }
+            }
+        }
+
+        private void Start()
+        {
+            UpdateLabel();
+        }
+
+        float _prevVal = 0;
+        private void Update()
+        {
+            if (_useControl)
+            {
+                var tempVal = MidiMaster.GetKnob(_midiChannel, _controlNumber, _prevVal);
+                if (tempVal != _prevVal)
+                {
+                    if (tempVal > _controlThreshold)
+                    {
+                        DoStateTransition(SelectionState.Pressed, true);
+                        isOn = true;
+                    }
+                    else
+                    {
+                        DoStateTransition(SelectionState.Normal, true);
+                        isOn = false;
+                    }
+
+                    _prevVal = tempVal;
+                }
             }
         }
     }

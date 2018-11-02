@@ -57,6 +57,7 @@ namespace MidiJack
         // Clock information
         public Queue<ulong> _clockEventTimestamps = new Queue<ulong>();
         public int _clockEventCount = 0;
+        private float _lastBeatLength = 0.5f;
 
         // Last update frame number
         int _lastFrame;
@@ -120,6 +121,12 @@ namespace MidiJack
         public event NoteOffDelegate noteOffEvent;
         public event KnobDelegate knobEvent;
         public event ClockDelegate clockEvent;
+
+        public float lastbeatLength
+        {
+            get { return _lastBeatLength; }
+        }
+
 
         #endregion
 
@@ -290,6 +297,7 @@ namespace MidiJack
                                 time = temp;
                             }
 
+                            _lastBeatLength = (24.0f * mean / 1000.0f);
                             if (clockEvent != null)
                             {
                                 clockEvent(24.0f * mean);

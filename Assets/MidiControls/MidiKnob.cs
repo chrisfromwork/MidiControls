@@ -213,6 +213,11 @@ namespace Controls.Midi
             base.Awake();
         }
 
+        private void Start()
+        {
+            UpdateLabel();
+        }
+
         private void Update()
         {
             this.value = MidiMaster.GetKnob(_midiChannel, _controlNumber, this.value);
