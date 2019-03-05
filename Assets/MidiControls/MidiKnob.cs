@@ -10,9 +10,9 @@ namespace Controls.Midi
     {
         #region Editable properties
 
-        [SerializeField] MidiChannel _midiChannel = MidiChannel.All;
+        [SerializeField] public MidiChannel _midiChannel = MidiChannel.All;
         [Range(0, 127)]
-        [SerializeField] int _controlNumber = 0;
+        [SerializeField] public int _controlNumber = 0;
 
         [SerializeField] float _minValue = 0;
 

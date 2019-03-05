@@ -9,10 +9,11 @@ namespace Controls.Midi
     public sealed class MidiToggle : Selectable, IPointerClickHandler, ICanvasElement
     {
         #region Editable properties
-        [SerializeField] MidiChannel _midiChannel = MidiChannel.All;
+        [SerializeField] public MidiChannel _midiChannel = MidiChannel.All;
         [Range(0, 127)]
-        [SerializeField] int _noteNumber = 0;
+        [SerializeField] public int _noteNumber = 0;
         [SerializeField] bool _isOn;
+        [SerializeField] public bool _trueOnOff = false;
 
         [SerializeField] bool _useControl = false;
         [SerializeField] int _controlNumber = 0;
@@ -139,14 +140,26 @@ namespace Controls.Midi
                     (_noteNumber == note))
                 {
                     isOn = !isOn;
-                    DoStateTransition(SelectionState.Pressed, true);
+
+                    if (!_trueOnOff)
+                    {
+                        DoStateTransition(SelectionState.Pressed, true);
+                    }
+                    else
+                    {
+                        DoStateTransition(SelectionState.Normal, true);
+                    }
                 }
             }
         }
 
         private void onNoteOff(MidiChannel channel, int note)
         {
-            if (!_useControl)
+            if (_trueOnOff)
+            {
+                onNoteOn(channel, note, 1.0f);
+            }
+            else if (!_useControl)
             {
                 if ((_midiChannel == MidiChannel.All || _midiChannel == channel) &&
                     (_noteNumber == note))

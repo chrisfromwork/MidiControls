@@ -10,14 +10,14 @@ namespace Controls.Midi
     [RequireComponent(typeof(RectTransform))]
     public sealed class MidiButton : Selectable, IPointerDownHandler, IPointerUpHandler
     {
-        [SerializeField] MidiChannel _midiChannel = MidiChannel.All;
+        [SerializeField] public MidiChannel _midiChannel = MidiChannel.All;
         [Range(0,127)]
-        [SerializeField] int _noteNumber = 0;
+        [SerializeField] public int _noteNumber = 0;
         [System.Serializable] public class ButtonEvent : UnityEvent { }
         [SerializeField] ButtonEvent _onButtonDown = new ButtonEvent();
         [SerializeField] ButtonEvent _onButtonUp = new ButtonEvent();
-        [SerializeField] bool _useControl = false;
-        [SerializeField] int _controlNumber = 0;
+        [SerializeField] public bool _useControl = false;
+        [SerializeField] public int _controlNumber = 0;
         [SerializeField] float _controlThreshold = 0.5f;
 
         public ButtonEvent onButtonDown
